@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIZE GUIDE | DYNAMIC STYLING</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <style>
+    /* --- MASTER THEME --- */
+    :root {
+      --primary: #ff0000;
+      --primary-glow: rgba(255, 0, 0, 0.6);
+      --bg: #000000;
+      --card-bg: #0a0a0a;
+      --header-bg: rgba(5, 5, 5, 0.95);
+    }
+
+    body { 
+      background-color: var(--bg); color: #fff; font-family: 'Arial Black', sans-serif; 
+      margin: 0; padding: 0; overflow-x: hidden; text-align: center;
+    }
+
+    #particles-js { 
+        position: fixed; width: 100%; height: 100%; top: 0; left: 0; 
+        z-index: -1; pointer-events: none; 
+    }
+
+    /* --- TOP STRIP --- */
+    .top-strip { 
+        background: var(--primary); color: #000; padding: 10px 0; font-weight: 900; font-size: 0.75rem;
+        letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; overflow: hidden; display: flex;
+    }
+    .scrolling-text { display: inline-block; animation: marquee 20s linear infinite; padding-right: 50px; }
+    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    /* --- HEADER --- */
+    header { 
+        background: var(--header-bg); border-bottom: 2px solid var(--primary); padding: 40px 20px;
+        position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(15px);
+    }
+    .shop-logo { font-size: clamp(2.5rem, 6vw, 4rem); letter-spacing: -3px; margin: 0; text-transform: uppercase; }
+    .shop-logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary-glow); }
+
+    /* --- SIZE GUIDE CONTENT --- */
+    .guide-container {
+      max-width: 1000px; margin: 60px auto; padding: 40px;
+      background: var(--card-bg); border: 1px solid #1a1a1a;
+      text-align: left;
+    }
+    .guide-header {
+      border-left: 5px solid var(--primary); padding-left: 20px; margin-bottom: 40px;
+    }
+    .guide-header h2 { font-size: 2.5rem; margin: 0; text-transform: uppercase; }
+    
+    /* --- TABLE STYLING --- */
+    .size-table-wrapper { overflow-x: auto; margin-top: 30px; }
+    table {
+      width: 100%; border-collapse: collapse; margin-bottom: 40px;
+      background: #050505;
+    }
+    th {
+      background: #111; color: var(--primary); text-transform: uppercase;
+      letter-spacing: 1px; padding: 20px; border: 1px solid #222;
+    }
+    td {
+      padding: 15px 20px; border: 1px solid #222; text-align: center;
+      font-family: sans-serif; font-weight: bold;
+    }
+    tr:hover { background: #0f0f0f; }
+
+    .measurement-tips {
+      margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;
+    }
+    .tip-box { background: #000; padding: 20px; border: 1px solid #333; }
+    .tip-box h4 { color: var(--primary); margin-top: 0; text-transform: uppercase; }
+    .tip-box p { font-family: sans-serif; font-size: 0.9rem; color: #ccc; line-height: 1.6; }
+
+    /* --- UPDATED BACK TO SHOP BUTTON ANIMATION --- */
+    .back-btn {
+      color: var(--primary);
+      text-decoration: none;
+      border: 2px solid var(--primary);
+      padding: 15px 40px;
+      display: inline-block;
+      font-family: 'Arial Black', sans-serif;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      transition: 0.4s ease;
+      background: transparent;
+    }
+
+    .back-btn::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--primary);
+      transition: 0.4s ease-out;
+      z-index: -1;
+    }
+
+    .back-btn:hover {
+      color: #000;
+      box-shadow: 0 0 20px var(--primary-glow);
+      transform: translateY(-3px);
+    }
+
+    .back-btn:hover::before {
+      top: 0;
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      background: #050505; border-top: 2px solid var(--primary);
+      padding: 80px 20px 40px 20px; text-align: left; margin-top: 100px;
+    }
+    .footer-container {
+      max-width: 1200px; margin: auto; display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px;
+    }
+    .footer-col h4 { color: var(--primary); margin-bottom: 25px; font-size: 1.2rem; }
+    .footer-col a { color: #888; text-decoration: none; display: block; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+  <div id="particles-js"></div>
+  
+  <div class="top-strip">
+    <div class="scrolling-text">
+      MEASURE TWICE, BUY ONCE // FREE SHIPPING ALL OVER INDIA // EQUIP THE BEST // NEW DROPS LIVE NOW // LIMITED EDITION GEAR RESTOCKED
+    </div>
+  </div>
+
+  <header>
+    <h1 class="shop-logo"><span>DYNAMIC</span> STYLING</h1>
+  </header>
+
+  <main class="guide-container">
+    <div class="guide-header">
+      <h2>Apparel Size Guide</h2>
+      <p style="color: #888; font-family: sans-serif;">All measurements are in inches. For a loose fit, we recommend sizing up.</p>
+    </div>
+
+    
+
+    <div class="size-table-wrapper">
+      <h3>UNISEX T-SHIRTS / JERSEYS</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>Chest (Inches)</th>
+            <th>Length (Inches)</th>
+            <th>Sleeve (Inches)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>S</td><td>38"</td><td>27"</td><td>8.0"</td></tr>
+          <tr><td>M</td><td>40"</td><td>28"</td><td>8.5"</td></tr>
+          <tr><td>L</td><td>42"</td><td>29"</td><td>9.0"</td></tr>
+          <tr><td>XL</td><td>44"</td><td>30"</td><td>9.5"</td></tr>
+          <tr><td>XXL</td><td>46"</td><td>31"</td><td>10.0"</td></tr>
+        </tbody>
+      </table>
+
+      <h3>HOODIES & JACKETS</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>Chest (Inches)</th>
+            <th>Length (Inches)</th>
+            <th>Sleeve (Inches)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>S</td><td>40"</td><td>27"</td><td>24.5"</td></tr>
+          <tr><td>M</td><td>42"</td><td>28"</td><td>25.0"</td></tr>
+          <tr><td>L</td><td>44"</td><td>29"</td><td>25.5"</td></tr>
+          <tr><td>XL</td><td>46"</td><td>30"</td><td>26.0"</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="measurement-tips">
+      <div class="tip-box">
+        <h4>1. Chest</h4>
+        <p>Measure around the fullest part of your chest, keeping the measuring tape horizontal.</p>
+      </div>
+      <div class="tip-box">
+        <h4>2. Length</h4>
+        <p>Measure from the highest point of the shoulder down to the bottom hem of the shirt.</p>
+      </div>
+      <div class="tip-box">
+        <h4>3. Over-Sized Look</h4>
+        <p>Our gear is athletic fit. If you prefer the "Streetwear Over-sized" look, please order one size larger than your usual.</p>
+      </div>
+    </div>
+    
+    <div style="margin-top: 50px; text-align: center;">
+        <a href="index.html" class="back-btn">BACK TO SHOP</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>DYNAMIC STYLING</h4>
+        <p style="color: #888; font-family: sans-serif;">Ensuring the perfect fit for the elite performance.</p>
+      </div>
+      <div class="footer-col">
+        <h4>SUPPORT</h4>
+        <a href="index.html">Clothing</a>
+        <a href="return-policy.html">Return Policy</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 60 },
+        "color": { "value": "#ff0000" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": 3 },
+        "line_linked": { "enable": true, "distance": 150, "color": "#ff0000", "opacity": 0.3, "width": 1 },
+        "move": { "enable": true, "speed": 1.5 }
+      }
+    });
+  </script>
+</body>
+</html>

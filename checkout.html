@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DYNAMIC STORE | Deployment Coordinates</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    :root { --primary: #ff0000; --bg: #000; --card: #0a0a0a; --border: #1a1a1a; }
+    body { background: var(--bg); color: #fff; font-family: 'Arial Black', sans-serif; margin: 0; text-align: center; }
+    
+    .checkout-container { max-width: 800px; margin: 50px auto; padding: 20px; }
+    .form-section { background: var(--card); border: 1px solid var(--border); padding: 40px; text-align: left; box-shadow: 0 0 30px rgba(255,0,0,0.05); }
+    h2 { border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 30px; font-size: 1.2rem; letter-spacing: 1px; }
+    
+    .input-group { margin-bottom: 20px; }
+    label { display: block; font-size: 0.7rem; color: #666; margin-bottom: 8px; letter-spacing: 1px; }
+    input { 
+      width: 100%; padding: 15px; background: #000; border: 1px solid #333; 
+      color: #fff; font-family: sans-serif; box-sizing: border-box; transition: 0.3s;
+    }
+    input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 10px rgba(255,0,0,0.2); }
+
+    .order-preview { background: #050505; border: 1px solid var(--border); padding: 25px; margin-top: 30px; font-family: sans-serif; }
+    .pay-btn { 
+      width: 100%; padding: 20px; background: var(--primary); color: #000; 
+      border: none; font-family: 'Arial Black'; cursor: pointer; margin-top: 20px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+      transition: 0.3s; text-transform: uppercase;
+    }
+    .pay-btn:hover { background: #fff; color: var(--primary); transform: scale(1.01); }
+    .pay-btn:disabled { background: #333; cursor: not-allowed; box-shadow: none; }
+  </style>
+</head>
+<body>
+
+  <div class="checkout-container">
+    <h1 style="letter-spacing: -2px;">DEPLOYMENT <span style="color:var(--primary)">COORDINATES</span></h1>
+    
+    <div class="form-section">
+      <h2>OPERATIVE DATA</h2>
+      <form id="payment-form">
+        <div class="input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div>
+            <label>FULL NAME</label>
+            <input type="text" id="cust-name" placeholder="GHOST RILEY" required>
+          </div>
+          <div>
+            <label>MOBILE NUMBER</label>
+            <input type="tel" id="cust-phone" placeholder="+91 00000 00000" required>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>EMAIL ADDRESS (GMAIL)</label>
+          <input type="email" id="cust-email" placeholder="operator@dynamic.com" required>
+        </div>
+
+        <h2>SHIPPING INFO</h2>
+        <div class="input-group">
+          <label>SHIPPING ADDRESS</label>
+          <input type="text" id="cust-address" placeholder="STREET, APARTMENT, AREA" required>
+        </div>
+        
+        <div class="input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div>
+            <label>CITY</label>
+            <input type="text" placeholder="MUMBAI" required>
+          </div>
+          <div>
+            <label>PINCODE</label>
+            <input type="text" placeholder="400001" required>
+          </div>
+        </div>
+
+        <div class="order-preview">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #666; font-size: 0.9rem;">TOTAL PAYABLE (Incl. 5% GST):</span>
+            <span id="final-amount" style="color: var(--primary); font-size: 1.5rem;">₹0</span>
+          </div>
+        </div>
+
+        <button type="submit" class="pay-btn">INITIALIZE PAYMENT</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function updateOrderTotal() {
+        const cart = JSON.parse(localStorage.getItem('gearboxCart')) || [];
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const tax = Math.round(subtotal * 0.05); 
+        const total = subtotal + tax;
+        document.getElementById('final-amount').innerText = '₹' + total.toLocaleString('en-IN');
+        return total;
+    }
+
+    const finalTotal = updateOrderTotal();
+
+    document.getElementById('payment-form').onsubmit = function(e) {
+      e.preventDefault();
+      
+      if (finalTotal <= 0) {
+          alert("ERROR: Armory empty. Cannot initialize deployment.");
+          return;
+      }
+
+      const btn = document.querySelector('.pay-btn');
+      const name = document.getElementById('cust-name').value;
+      const phone = document.getElementById('cust-phone').value;
+      const email = document.getElementById('cust-email').value;
+
+      btn.innerText = "ESTABLISHING SECURE LINK...";
+      btn.disabled = true;
+
+      const options = {
+          "key": "rzp_test_S25gu4xgXJAV6Z", 
+          "amount": finalTotal * 100, 
+          "currency": "INR",
+          "name": "DYNAMIC GEARBOX",
+          "description": "Tactical Gear Purchase",
+          "handler": function (response){
+              localStorage.removeItem('gearboxCart');
+              window.location.href = "success.html";
+          },
+          "prefill": {
+              "name": name,
+              "email": email, // Added dynamic email
+              "contact": phone // Added dynamic mobile
+          },
+          "theme": { "color": "#ff0000" },
+          "modal": {
+              "ondismiss": function(){
+                  btn.innerText = "INITIALIZE PAYMENT";
+                  btn.disabled = false;
+              }
+          }
+      };
+
+      const rzp1 = new Razorpay(options);
+      rzp1.open();
+    };
+  </script>
+</body>
+</html>

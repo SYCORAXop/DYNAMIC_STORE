@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RETURN PROTOCOL | DYNAMIC STYLING</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <style>
+    /* --- MASTER THEME (IDENTICAL) --- */
+    :root {
+      --primary: #ff0000;
+      --primary-glow: rgba(255, 0, 0, 0.6);
+      --bg: #000000;
+      --card-bg: #0a0a0a;
+      --header-bg: rgba(5, 5, 5, 0.95);
+    }
+
+    body { 
+      background-color: var(--bg); color: #fff; font-family: 'Arial Black', sans-serif; 
+      margin: 0; padding: 0; overflow-x: hidden; text-align: center;
+    }
+
+    #particles-js { 
+        position: fixed; width: 100%; height: 100%; top: 0; left: 0; 
+        z-index: -1; pointer-events: none; 
+    }
+
+    /* --- TOP STRIP --- */
+    .top-strip { 
+        background: var(--primary); color: #000; padding: 10px 0; font-weight: 900; font-size: 0.75rem;
+        letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; overflow: hidden; display: flex;
+    }
+    .scrolling-text { display: inline-block; animation: marquee 20s linear infinite; padding-right: 50px; }
+    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    /* --- HEADER --- */
+    header { 
+        background: var(--header-bg); border-bottom: 2px solid var(--primary); padding: 40px 20px;
+        position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(15px);
+    }
+    .shop-logo { font-size: clamp(2.5rem, 6vw, 4rem); letter-spacing: -3px; margin: 0; text-transform: uppercase; }
+    .shop-logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary-glow); }
+
+    /* --- CONTENT LAYOUT --- */
+    .policy-container {
+      max-width: 900px; margin: 60px auto; padding: 40px;
+      background: var(--card-bg); border: 1px solid #1a1a1a;
+      text-align: left; position: relative;
+    }
+    .policy-container::after {
+      content: 'REFUND_DIRECTIVE_V2.0'; position: absolute; bottom: 10px; right: 20px;
+      color: #333; font-size: 0.7rem; letter-spacing: 2px;
+    }
+
+    .policy-header {
+      border-left: 5px solid var(--primary); padding-left: 20px; margin-bottom: 50px;
+    }
+    .policy-header h2 { font-size: 2.5rem; margin: 0; text-transform: uppercase; }
+    .policy-header p { color: var(--primary); font-size: 0.9rem; letter-spacing: 2px; margin-top: 5px; }
+
+    .sector { margin-bottom: 40px; }
+    .sector h3 { 
+        font-size: 1.2rem; color: #fff; border-bottom: 1px solid #222; 
+        padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;
+    }
+    .sector h3 i { color: var(--primary); font-size: 1rem; }
+    .sector p, .sector li { 
+        font-family: sans-serif; color: #888; line-height: 1.8; font-size: 0.95rem; 
+    }
+    .sector ul { padding-left: 20px; list-style-type: square; }
+    .sector ul li { margin-bottom: 10px; }
+    .highlight { color: #fff; font-weight: bold; }
+
+    /* --- BACK BUTTON --- */
+    .btn-wrapper { margin: 50px 0; text-align: center; }
+    .back-btn {
+      padding: 15px 40px; background: transparent; color: #fff;
+      border: 2px solid var(--primary); font-family: 'Arial Black'; cursor: pointer;
+      position: relative; z-index: 1; overflow: hidden; transition: 0.4s;
+      text-decoration: none; display: inline-block;
+    }
+    .back-btn::before {
+      content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 100%;
+      background: var(--primary); transition: 0.4s ease-out; z-index: -1;
+    }
+    .back-btn:hover { color: #000; transform: translateY(-3px); box-shadow: 0 0 20px var(--primary-glow); }
+    .back-btn:hover::before { top: 0; }
+
+    /* --- FOOTER --- */
+    footer {
+      background: #050505; border-top: 2px solid var(--primary);
+      padding: 80px 20px 40px 20px; text-align: left; margin-top: 100px;
+    }
+    .footer-container {
+      max-width: 1200px; margin: auto; display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px;
+    }
+    .footer-col h4 { color: var(--primary); margin-bottom: 25px; font-size: 1.2rem; }
+    .footer-col a { color: #888; text-decoration: none; display: block; margin-bottom: 12px; font-family: sans-serif; }
+  </style>
+</head>
+<body>
+
+  <div id="particles-js"></div>
+  
+  <div class="top-strip">
+    <div class="scrolling-text">
+      SYSTEM PROTOCOL: RETURNS // 7-DAY EXCHANGE WINDOW // QUALITY ASSURANCE CHECK ENABLED // DYNAMIC STYLING OFFICIAL
+    </div>
+  </div>
+
+  <header>
+    <h1 class="shop-logo"><span>DYNAMIC</span> STYLING</h1>
+  </header>
+
+  <main>
+    <div class="policy-container">
+      <div class="policy-header">
+        <h2>Return Policy</h2>
+      </div>
+
+      <div class="sector">
+        <h3><i class="fas fa-shield-alt"></i> 01. ELIGIBILITY WINDOW</h3>
+        <p>Items must be returned within <span class="highlight">7 days</span> of delivery. To be eligible for a return, your gear must be unused, in the same condition that you received it, and in its original packaging with all tags attached.</p>
+      </div>
+
+      <div class="sector">
+        <h3><i class="fas fa-exclamation-triangle"></i> 02. NON-RETURNABLE ITEMS</h3>
+        <p>The following items are locked and cannot be returned:</p>
+        <ul>
+          <li>Limited Edition "Drop" items (Sales are final).</li>
+          <li>Customized jerseys or gear with player names.</li>
+          <li>Items marked as "Final Sale" or "Clearance".</li>
+          <li>Underwear and socks (for hygiene safety).</li>
+        </ul>
+      </div>
+
+      <div class="sector">
+        <h3><i class="fas fa-sync-alt"></i> 03. EXCHANGE PROCESS</h3>
+        <p>We only replace items if they are <span class="highlight">defective or damaged</span> during transit. If you need to exchange it for the same item in a different size, please initiate a request via our Contact Page.</p>
+      </div>
+
+      <div class="sector">
+        <h3><i class="fas fa-truck-loading"></i> 04. RETURN SHIPPING</h3>
+        <p>You will be responsible for paying for your own shipping costs for returning your item. Shipping costs are non-refundable. If you receive a refund, the cost of return shipping will be deducted from your refund.</p>
+      </div>
+
+      <div class="sector">
+        <h3><i class="fas fa-wallet"></i> 05. REFUNDS</h3>
+        <p>Once your return is inspected, we will notify you of the approval or rejection of your refund. Approved refunds will be processed to your original method of payment within <span class="highlight">5-7 business days</span>.</p>
+      </div>
+    </div>
+
+    <div class="btn-wrapper">
+        <a href="index.html" class="back-btn">BACK TO SHOP</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>DYNAMIC STYLING</h4>
+        <div class="social-icons" style="display: flex; gap: 15px;">
+          <a href="https://www.instagram.com/_dynamic_official_?igsh=OWxqeGp1dHBmbDhn" target="_blank" style="color:#fff;"><i class="fab fa-instagram"></i></a>
+          <a href="https://youtube.com/@sycoraxop?si=r41N5OhNxJ2qV0uP" target="_blank" style="color:#fff;"><i class="fab fa-youtube"></i></a>
+          <a href="https://discord.gg/2SXejt9v" target="_blank" style="color:#fff;"><i class="fab fa-discord"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>SUPPORT</h4>
+        <a href="index.html">Clothing</a>
+        <a href="size-guide.html">Size Guide</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 60 },
+        "color": { "value": "#ff0000" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": 3 },
+        "line_linked": { "enable": true, "distance": 150, "color": "#ff0000", "opacity": 0.3, "width": 1 },
+        "move": { "enable": true, "speed": 1.5 }
+      }
+    });
+  </script>
+</body>
+</html>

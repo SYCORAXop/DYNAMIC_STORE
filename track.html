@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DYNAMIC STORE | Track Order</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* --- MASTER THEME --- */
+    :root { 
+      --primary: #ff0000; 
+      --primary-glow: rgba(255, 0, 0, 0.6); 
+      --bg: #000000; 
+      --card-bg: #0a0a0a; 
+      --header-bg: rgba(5, 5, 5, 0.95); 
+    }
+    
+    body { 
+      background-color: var(--bg); color: #fff; font-family: 'Arial Black', sans-serif; 
+      margin: 0; padding: 0; overflow-x: hidden; text-align: center; 
+      display: flex; flex-direction: column; min-height: 100vh; 
+    }
+
+    #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; pointer-events: none; }
+    
+    .top-strip { 
+      background: var(--primary); color: #000; padding: 10px 0; font-weight: 900; 
+      font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; 
+    }
+    
+    header { 
+      background: var(--header-bg); border-bottom: 2px solid var(--primary); 
+      padding: 40px 20px; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(15px); 
+    }
+
+    .shop-logo { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -2px; margin: 0; text-transform: uppercase; text-decoration: none; color: inherit;}
+    .shop-logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary-glow); }
+
+    /* --- TRACKING CONTAINER --- */
+    main { flex: 1; padding: 20px; }
+    
+    /* UPDATED: Centered & Larger Back Button */
+    .back-btn-container { 
+      width: 100%; 
+      margin: 50px auto 20px auto; 
+      display: flex; 
+      justify-content: center; 
+    }
+    .back-to-store { 
+      color: #fff; 
+      text-decoration: none; 
+      font-family: 'Arial Black', sans-serif; 
+      font-size: 1.1rem; 
+      text-transform: uppercase; 
+      letter-spacing: 2px; 
+      padding: 15px 35px;
+      border: 1px solid #333;
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.4s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .back-to-store:hover { 
+      color: #000; 
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 0 30px var(--primary-glow);
+      transform: translateY(-3px);
+    }
+    .back-to-store i { transition: transform 0.3s ease; }
+    .back-to-store:hover i { transform: translateX(-5px); }
+
+    .track-container { max-width: 600px; margin: 40px auto 100px auto; padding: 40px; background: var(--card-bg); border: 1px solid #1a1a1a; position: relative; }
+    .step-box { display: none; }
+    .step-box.active { display: block; animation: fadeIn 0.5s ease; }
+
+    h2 { border-bottom: 1px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px; font-size: 1.5rem; }
+    
+    .input-group { text-align: left; margin-bottom: 25px; }
+    label { display: block; font-size: 0.7rem; color: #888; margin-bottom: 8px; letter-spacing: 1px; }
+    input { 
+        width: 100%; background: #111; border: 1px solid #333; padding: 15px; color: #fff; 
+        font-family: 'Arial', sans-serif; box-sizing: border-box; outline: none; transition: 0.3s;
+    }
+    input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+
+    .action-btn { 
+        width: 100%; padding: 20px; background: var(--primary); color: #000; border: none; 
+        font-family: 'Arial Black'; cursor: pointer; text-transform: uppercase; transition: 0.3s;
+    }
+    .action-btn:hover:not(:disabled) { background: #fff; transform: scale(1.02); }
+    .action-btn:disabled { cursor: not-allowed; filter: grayscale(0.5); }
+
+    .order-card { background: #111; border-left: 4px solid var(--primary); padding: 20px; text-align: left; margin-top: 20px; }
+    .status-badge { background: var(--primary); color: #000; padding: 2px 10px; font-size: 0.7rem; float: right; }
+    
+    .resend-link { color: var(--primary); text-decoration: none; font-weight: bold; cursor: pointer; }
+    .resend-link.disabled { color: #444; cursor: default; }
+
+    /* --- FOOTER (UNIFIED) --- */
+    footer {
+      background: #050505; border-top: 2px solid var(--primary);
+      padding: 80px 20px 40px 20px; text-align: left; margin-top: auto;
+    }
+    .footer-container {
+      max-width: 1200px; margin: auto; display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px;
+    }
+    .footer-col h4 { color: var(--primary); margin-bottom: 25px; font-size: 1.2rem; }
+    .footer-col p, .footer-col a { color: #888; text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 12px; transition: 0.3s; font-family: sans-serif;}
+    .footer-col a:hover { color: #fff; padding-left: 5px; }
+
+    .social-icons { display: flex; gap: 15px; margin-top: 20px; }
+    .social-icons i { 
+        width: 40px; height: 40px; background: #111; display: flex; align-items: center; 
+        justify-content: center; border-radius: 50%; transition: 0.3s; cursor: pointer;
+    }
+    .social-icons i:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
+
+    .status-dot {
+        height: 10px; width: 10px; background-color: #00ff00; border-radius: 50%;
+        display: inline-block; margin-right: 10px; box-shadow: 0 0 8px #00ff00;
+        animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+
+
+  <header>
+    <a href="index.html" class="shop-logo"><h1>TRACK <span>ORDER</span></h1></a>
+  </header>
+
+  <main>
+    <div class="back-btn-container">
+      <a href="index.html" class="back-to-store"><i class="fas fa-arrow-left"></i> BACK TO STORE</a>
+    </div>
+
+    <section class="track-container">
+      <div id="step-1" class="step-box active">
+        <h2>INITIALIZE TRACKING</h2>
+        <div class="input-group">
+          <label>ORDER ID</label>
+          <input type="text" id="order-id" placeholder="e.g. DYN-123">
+        </div>
+        <div class="input-group">
+          <label>EMAIL ADDRESS</label>
+          <input type="email" id="email" placeholder="agent@dynamic.com">
+        </div>
+        <button class="action-btn" onclick="sendOTP()">SEND VERIFICATION CODE</button>
+      </div>
+
+      <div id="step-2" class="step-box">
+        <h2>VERIFY IDENTITY</h2>
+        <p style="font-family: sans-serif; color: #888; font-size: 0.8rem; margin-bottom: 20px;">
+          A verification code has been dispatched to your email address.
+        </p>
+        <div class="input-group">
+          <label>6-DIGIT CODE</label>
+          <input type="text" id="otp-input" placeholder="0 0 0 0 0 0" maxlength="6" style="text-align: center; letter-spacing: 10px;">
+        </div>
+        <button class="action-btn" onclick="verifyOTP()">VERIFY & ACCESS</button>
+        
+        <p style="margin-top: 25px; font-family: sans-serif; font-size: 0.75rem; color: #888;">
+          Didn't receive the code? 
+          <span id="resend-wrapper">
+            <a href="javascript:void(0)" class="resend-link" onclick="resendOTP()">RESEND CODE</a>
+          </span>
+        </p>
+      </div>
+
+      <div id="step-3" class="step-box">
+        <h2>ORDER STATUS</h2>
+        <div id="order-result"></div>
+        <button class="action-btn" style="margin-top:30px; background:transparent; border:1px solid #333; color:#fff;" onclick="location.reload()">NEW SEARCH</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>DYNAMIC STYLING</h4>
+        <p>The hardware and apparel of champions. Designed by players, for players. Since 2018.</p>
+        <div class="social-icons">
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-twitter"></i>
+          <i class="fab fa-discord"></i>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>SUPPORT</h4>
+        <a href="track.html">Track Order</a>
+        <a href="size-guide.html">Size Guide</a>
+        <a href="return-policy.html">Return Policy</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h4>SHOP STATUS</h4>
+        <p><span class="status-dot"></span> Server: Online</p>
+        <p><span class="status-dot"></span> Inventory: Restocked</p>
+        <p style="margin-top:20px; color:#555; font-size: 0.7rem;">&copy; 2018 DYNAMIC ESPORTS</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 40 },
+        "color": { "value": "#ff0000" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.2 },
+        "size": { "value": 2 },
+        "line_linked": { "enable": true, "distance": 150, "color": "#ff0000", "opacity": 0.1, "width": 1 },
+        "move": { "enable": true, "speed": 1 }
+      }
+    });
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxdI6eB9jmxYEsOlvz3MD8KDiHM1e4jjXPGfjvh77bKEWABmOLbydnd_ImtJGsSArt/exec";
+    let resendTimer = 0;
+
+    function startResendTimer() {
+        resendTimer = 30;
+        const wrapper = document.getElementById('resend-wrapper');
+        const countdown = setInterval(() => {
+            if (resendTimer > 0) {
+                wrapper.innerHTML = `<span class="resend-link disabled">Retry in ${resendTimer}s</span>`;
+                resendTimer--;
+            } else {
+                wrapper.innerHTML = `<a href="javascript:void(0)" class="resend-link" onclick="resendOTP()">RESEND CODE</a>`;
+                clearInterval(countdown);
+            }
+        }, 1000);
+    }
+
+    async function sendOTP() {
+        const btn = document.querySelector("#step-1 .action-btn");
+        const email = document.getElementById('email').value;
+        const orderId = document.getElementById('order-id').value;
+        if(!email || !orderId) { alert("Please fill in all fields."); return; }
+        btn.innerText = "SENDING SECURE CODE...";
+        btn.disabled = true;
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "sendOTP", email, orderId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                document.getElementById('step-1').classList.remove('active');
+                document.getElementById('step-2').classList.add('active');
+                startResendTimer();
+            } else {
+                alert("Failed to send OTP.");
+                btn.innerText = "SEND VERIFICATION CODE";
+                btn.disabled = false;
+            }
+        } catch (err) {
+            alert("Verification Server Error.");
+            btn.innerText = "SEND VERIFICATION CODE";
+            btn.disabled = false;
+        }
+    }
+
+    function resendOTP() { sendOTP(); }
+
+    async function verifyOTP() {
+        const btn = document.querySelector("#step-2 .action-btn");
+        const email = document.getElementById('email').value;
+        const otp = document.getElementById('otp-input').value;
+        const orderId = document.getElementById('order-id').value;
+        if(!otp) return alert("Enter the verification code.");
+        btn.innerText = "AUTHENTICATING...";
+        btn.disabled = true;
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "verifyOTP", email, otp, orderId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showOrder(data.order);
+            } else {
+                alert("ACCESS DENIED: Invalid Code");
+                btn.innerText = "VERIFY & ACCESS";
+                btn.disabled = false;
+            }
+        } catch (err) {
+            alert("System Error.");
+            btn.innerText = "VERIFY & ACCESS";
+            btn.disabled = false;
+        }
+    }
+
+    function showOrder(order) {
+        document.getElementById('step-2').classList.remove('active');
+        document.getElementById('step-3').classList.add('active');
+        const resultDiv = document.getElementById('order-result');
+        if(order) {
+            resultDiv.innerHTML = `
+                <div class="order-card">
+                    <span class="status-badge">${order.status}</span>
+                    <h4 style="margin:0; color:var(--primary);">${order.id}</h4>
+                    <p style="font-family:sans-serif; font-size:0.9rem; margin:15px 0 5px 0;">Items: ${order.items}</p>
+                    <p style="font-family:sans-serif; font-size:0.8rem; color:#555;">Verified via Cloud Link</p>
+                    <hr style="border:0; border-top:1px solid #222; margin:15px 0;">
+                    <p style="font-family:sans-serif; font-size:0.8rem;"><i class="fas fa-map-marker-alt" style="color:var(--primary)"></i> Current Location: ${order.location}</p>
+                </div>`;
+        }
+    }
+  </script>
+</body>
+</html>
