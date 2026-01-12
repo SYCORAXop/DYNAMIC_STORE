@@ -66,11 +66,11 @@
         <div class="input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
           <div>
             <label>CITY</label>
-            <input type="text" placeholder="MUMBAI" required>
+            <input type="text" id="cust-city" placeholder="MUMBAI" required>
           </div>
           <div>
             <label>PINCODE</label>
-            <input type="text" placeholder="400001" required>
+            <input type="text" id="cust-pincode" placeholder="400001" required>
           </div>
         </div>
 
@@ -87,6 +87,9 @@
   </div>
 
   <script>
+    // --- CONFIGURATION ---
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmnwZ-cnVswlts6woelfof-4XkXI6SMeQbJ6T8N3mV8P368_Lo6uYQwyIDv55W5cU5FA/exec"; 
+
     function updateOrderTotal() {
         const cart = JSON.parse(localStorage.getItem('gearboxCart')) || [];
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -110,6 +113,10 @@
       const name = document.getElementById('cust-name').value;
       const phone = document.getElementById('cust-phone').value;
       const email = document.getElementById('cust-email').value;
+      const address = `${document.getElementById('cust-address').value}, ${document.getElementById('cust-city').value} - ${document.getElementById('cust-pincode').value}`;
+
+      const cart = JSON.parse(localStorage.getItem('gearboxCart')) || [];
+      const itemSummary = cart.map(i => `${i.name} (x${i.quantity})`).join(", ");
 
       btn.innerText = "ESTABLISHING SECURE LINK...";
       btn.disabled = true;
@@ -120,14 +127,43 @@
           "currency": "INR",
           "name": "DYNAMIC GEARBOX",
           "description": "Tactical Gear Purchase",
-          "handler": function (response){
-              localStorage.removeItem('gearboxCart');
-              window.location.href = "success.html";
+          "handler": async function (response){
+              btn.innerText = "LOGGING COORDINATES...";
+              const orderId = "DG-" + Math.floor(100000 + Math.random() * 900000);
+
+              try {
+                  // --- OPTIMIZED FETCH FOR GOOGLE SCRIPTS ---
+                  await fetch(SCRIPT_URL, {
+                      method: 'POST',
+                      mode: 'no-cors', 
+                      cache: 'no-cache',
+                      redirect: 'follow', 
+                      // Removed headers for cleaner no-cors handling
+                      body: JSON.stringify({
+                          orderId: orderId,
+                          name: name,
+                          email: email,
+                          phone: phone,
+                          address: address,
+                          items: itemSummary,
+                          amount: finalTotal
+                      })
+                  });
+
+                  console.log("Transmission Complete.");
+                  localStorage.removeItem('gearboxCart');
+                  window.location.href = "success.html?ord=" + orderId;
+
+              } catch (err) {
+                  console.error("Critical: Logging failed", err);
+                  localStorage.removeItem('gearboxCart');
+                  window.location.href = "success.html?ord=" + orderId;
+              }
           },
           "prefill": {
               "name": name,
-              "email": email, // Added dynamic email
-              "contact": phone // Added dynamic mobile
+              "email": email,
+              "contact": phone
           },
           "theme": { "color": "#ff0000" },
           "modal": {

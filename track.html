@@ -21,11 +21,14 @@
       display: flex; flex-direction: column; min-height: 100vh; 
     }
 
-    #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; pointer-events: none; }
-    
-    .top-strip { 
-      background: var(--primary); color: #000; padding: 10px 0; font-weight: 900; 
-      font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; 
+    /* FIXED INTERACTIVE BACKGROUND */
+    #particles-js { 
+      position: fixed; 
+      width: 100%; 
+      height: 100%; 
+      top: 0; 
+      left: 0; 
+      z-index: 0; /* Changed to 0 to allow interaction */
     }
     
     header { 
@@ -36,10 +39,10 @@
     .shop-logo { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -2px; margin: 0; text-transform: uppercase; text-decoration: none; color: inherit;}
     .shop-logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary-glow); }
 
-    /* --- TRACKING CONTAINER --- */
-    main { flex: 1; padding: 20px; }
+    /* Ensure content stays above the interactive canvas */
+    main { flex: 1; padding: 20px; position: relative; z-index: 1; pointer-events: none; }
+    .track-container, .back-btn-container { pointer-events: all; } /* Allow clicking on forms/buttons */
     
-    /* UPDATED: Centered & Larger Back Button */
     .back-btn-container { 
       width: 100%; 
       margin: 50px auto 20px auto; 
@@ -68,8 +71,6 @@
       box-shadow: 0 0 30px var(--primary-glow);
       transform: translateY(-3px);
     }
-    .back-to-store i { transition: transform 0.3s ease; }
-    .back-to-store:hover i { transform: translateX(-5px); }
 
     .track-container { max-width: 600px; margin: 40px auto 100px auto; padding: 40px; background: var(--card-bg); border: 1px solid #1a1a1a; position: relative; }
     .step-box { display: none; }
@@ -98,10 +99,10 @@
     .resend-link { color: var(--primary); text-decoration: none; font-weight: bold; cursor: pointer; }
     .resend-link.disabled { color: #444; cursor: default; }
 
-    /* --- FOOTER (UNIFIED) --- */
     footer {
       background: #050505; border-top: 2px solid var(--primary);
       padding: 80px 20px 40px 20px; text-align: left; margin-top: auto;
+      position: relative; z-index: 10;
     }
     .footer-container {
       max-width: 1200px; margin: auto; display: grid;
@@ -109,14 +110,6 @@
     }
     .footer-col h4 { color: var(--primary); margin-bottom: 25px; font-size: 1.2rem; }
     .footer-col p, .footer-col a { color: #888; text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 12px; transition: 0.3s; font-family: sans-serif;}
-    .footer-col a:hover { color: #fff; padding-left: 5px; }
-
-    .social-icons { display: flex; gap: 15px; margin-top: 20px; }
-    .social-icons i { 
-        width: 40px; height: 40px; background: #111; display: flex; align-items: center; 
-        justify-content: center; border-radius: 50%; transition: 0.3s; cursor: pointer;
-    }
-    .social-icons i:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
 
     .status-dot {
         height: 10px; width: 10px; background-color: #00ff00; border-radius: 50%;
@@ -124,13 +117,12 @@
         animation: pulse 1.5s infinite;
     }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 
-
+  <div id="particles-js"></div>
 
   <header>
     <a href="index.html" class="shop-logo"><h1>TRACK <span>ORDER</span></h1></a>
@@ -186,24 +178,16 @@
     <div class="footer-container">
       <div class="footer-col">
         <h4>DYNAMIC STYLING</h4>
-        <p>The hardware and apparel of champions. Designed by players, for players. Since 2018.</p>
-        <div class="social-icons">
-          <i class="fab fa-instagram"></i>
-          <i class="fab fa-twitter"></i>
-          <i class="fab fa-discord"></i>
-        </div>
+        <p>The hardware and apparel of champions. Since 2018.</p>
       </div>
       <div class="footer-col">
         <h4>SUPPORT</h4>
         <a href="track.html">Track Order</a>
-        <a href="size-guide.html">Size Guide</a>
-        <a href="return-policy.html">Return Policy</a>
         <a href="contact.html">Contact Us</a>
       </div>
       <div class="footer-col">
         <h4>SHOP STATUS</h4>
         <p><span class="status-dot"></span> Server: Online</p>
-        <p><span class="status-dot"></span> Inventory: Restocked</p>
         <p style="margin-top:20px; color:#555; font-size: 0.7rem;">&copy; 2018 DYNAMIC ESPORTS</p>
       </div>
     </div>
@@ -211,19 +195,47 @@
 
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
+    /* OPTIMIZED INTERACTIVE PARTICLES */
     particlesJS("particles-js", {
       "particles": {
-        "number": { "value": 40 },
+        "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
         "color": { "value": "#ff0000" },
         "shape": { "type": "circle" },
-        "opacity": { "value": 0.2 },
-        "size": { "value": 2 },
-        "line_linked": { "enable": true, "distance": 150, "color": "#ff0000", "opacity": 0.1, "width": 1 },
-        "move": { "enable": true, "speed": 1 }
-      }
+        "opacity": { "value": 0.3, "random": true },
+        "size": { "value": 3, "random": true },
+        "line_linked": { 
+          "enable": true, 
+          "distance": 150, 
+          "color": "#ff0000", 
+          "opacity": 0.2, 
+          "width": 1 
+        },
+        "move": { 
+          "enable": true, 
+          "speed": 2, 
+          "direction": "none", 
+          "random": false, 
+          "straight": false, 
+          "out_mode": "out", 
+          "bounce": false 
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": { "enable": true, "mode": "grab" },
+          "onclick": { "enable": true, "mode": "push" },
+          "resize": true
+        },
+        "modes": {
+          "grab": { "distance": 200, "line_linked": { "opacity": 0.5 } },
+          "push": { "particles_nb": 4 }
+        }
+      },
+      "retina_detect": true
     });
 
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxdI6eB9jmxYEsOlvz3MD8KDiHM1e4jjXPGfjvh77bKEWABmOLbydnd_ImtJGsSArt/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9ku5uOCJmZJ7G5n0goQozAh8DkTc7P-TLJ37wJVPcYLh0BfLAWE3qlUy_s0ZrelycYw/exec";
     let resendTimer = 0;
 
     function startResendTimer() {
@@ -244,59 +256,68 @@
         const btn = document.querySelector("#step-1 .action-btn");
         const email = document.getElementById('email').value;
         const orderId = document.getElementById('order-id').value;
+        
         if(!email || !orderId) { alert("Please fill in all fields."); return; }
+        
         btn.innerText = "SENDING SECURE CODE...";
         btn.disabled = true;
+
+        const url = `${SCRIPT_URL}?action=sendOTP&email=${encodeURIComponent(email)}&orderId=${encodeURIComponent(orderId)}`;
+
         try {
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify({ action: "sendOTP", email, orderId })
-            });
+            const response = await fetch(url);
             const data = await response.json();
+
             if (data.success) {
                 document.getElementById('step-1').classList.remove('active');
                 document.getElementById('step-2').classList.add('active');
                 startResendTimer();
             } else {
-                alert("Failed to send OTP.");
-                btn.innerText = "SEND VERIFICATION CODE";
-                btn.disabled = false;
+                alert("Error: " + (data.error || "Failed to send OTP."));
+                resetBtn(btn, "SEND VERIFICATION CODE");
             }
         } catch (err) {
-            alert("Verification Server Error.");
-            btn.innerText = "SEND VERIFICATION CODE";
-            btn.disabled = false;
+            console.error(err);
+            alert("Verification Server Error. Check if the script is deployed as 'Anyone'.");
+            resetBtn(btn, "SEND VERIFICATION CODE");
         }
     }
-
-    function resendOTP() { sendOTP(); }
 
     async function verifyOTP() {
         const btn = document.querySelector("#step-2 .action-btn");
         const email = document.getElementById('email').value;
         const otp = document.getElementById('otp-input').value;
         const orderId = document.getElementById('order-id').value;
+        
         if(!otp) return alert("Enter the verification code.");
+        
         btn.innerText = "AUTHENTICATING...";
         btn.disabled = true;
+
+        const url = `${SCRIPT_URL}?action=verifyOTP&email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}&orderId=${encodeURIComponent(orderId)}`;
+
         try {
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify({ action: "verifyOTP", email, otp, orderId })
-            });
+            const response = await fetch(url);
             const data = await response.json();
+
             if (data.success) {
                 showOrder(data.order);
             } else {
-                alert("ACCESS DENIED: Invalid Code");
-                btn.innerText = "VERIFY & ACCESS";
-                btn.disabled = false;
+                alert("ACCESS DENIED: " + (data.error || "Invalid Code"));
+                resetBtn(btn, "VERIFY & ACCESS");
             }
         } catch (err) {
-            alert("System Error.");
-            btn.innerText = "VERIFY & ACCESS";
-            btn.disabled = false;
+            console.error(err);
+            alert("System Error during verification.");
+            resetBtn(btn, "VERIFY & ACCESS");
         }
+    }
+
+    function resendOTP() { sendOTP(); }
+
+    function resetBtn(btn, text) {
+        btn.innerText = text;
+        btn.disabled = false;
     }
 
     function showOrder(order) {
