@@ -27,6 +27,14 @@
         z-index: -1; pointer-events: none; 
     }
 
+    /* --- TACTICAL HUD SCROLL BAR --- */
+    #scroll-hud {
+        position: fixed; top: 0; left: 0; height: 3px;
+        background: linear-gradient(to right, #ff0000, #990000);
+        width: 0%; z-index: 9999;
+        box-shadow: 0 0 10px var(--primary-glow);
+    }
+
     .top-strip { 
         background: var(--primary); color: #000; padding: 10px 0; font-weight: 900; font-size: 0.75rem;
         letter-spacing: 2px; text-transform: uppercase;
@@ -103,10 +111,44 @@
     .buy-btn:hover { color: #000; border-color: var(--primary); }
     .buy-btn:hover::before { top: 0; }
 
+    /* --- TRUST HUB (SECURITY BADGES) --- */
+    .trust-hub {
+        background: #050505;
+        border-top: 1px solid #111;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 50px;
+        margin-top: 60px;
+    }
+
+    .trust-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        min-width: 150px;
+    }
+
+    .trust-badge i {
+        font-size: 2rem;
+        color: var(--primary);
+        filter: drop-shadow(0 0 5px var(--primary-glow));
+    }
+
+    .trust-badge span {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        color: #888;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
     /* --- FOOTER --- */
     footer {
-      background: #050505; border-top: 2px solid var(--primary);
-      padding: 80px 20px 40px 20px; text-align: left; margin-top: 100px;
+      background: #000; border-top: 2px solid var(--primary);
+      padding: 80px 20px 40px 20px; text-align: left;
     }
     .footer-container {
       max-width: 1200px; margin: auto; display: grid;
@@ -134,19 +176,21 @@
 </head>
 <body>
 
+  <div id="scroll-hud"></div>
+
   <div id="particles-js"></div>
   <div class="top-strip">EQUIP THE BEST • FREE SHIPPING ALL OVER INDIA • NEW DROPS LIVE NOW</div>
 
   <header>
     <h1 class="shop-logo"><span>DYNAMIC</span> ACCESSORIES</h1>
     <nav class="shop-nav">
-  <a href="index.html">CLOTHING</a>
-  <a href="Hardware.html">HARDWARE</a>
-  <a href="accessories.html"  class="active" >ACCESSORIES</a>
-  <a href="cart.html" style="color: #fff;">
-    <i class="fas fa-shopping-bag"></i> CART (<span id="cart-count">0</span>)
-  </a>
-</nav>
+      <a href="index.html">CLOTHING</a>
+      <a href="Hardware.html">HARDWARE</a>
+      <a href="accessories.html"  class="active" >ACCESSORIES</a>
+      <a href="cart.html" style="color: #fff;">
+        <i class="fas fa-shopping-bag"></i> CART (<span id="cart-count">0</span>)
+      </a>
+    </nav>
   </header>
 
   <section class="product-grid">
@@ -155,7 +199,6 @@
       <h3 style="margin: 20px 0 10px 0;">CYBER TAG KEYCHAIN</h3>
       <div style="color: var(--primary); font-size: 1.4rem;">₹399</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -163,7 +206,6 @@
       <h3 style="margin: 20px 0 10px 0;">STEALTH WATER FLASK</h3>
       <div style="color: var(--primary); font-size: 1.4rem;">₹1,450</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -171,7 +213,6 @@
         <h3 style="margin: 20px 0 10px 0;">TACTICAL FIELD DIARY</h3>
         <div style="color: var(--primary); font-size: 1.4rem;">₹899</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -179,7 +220,6 @@
         <h3 style="margin: 20px 0 10px 0;">IMPACT PHONE SHELL</h3>
         <div style="color: var(--primary); font-size: 1.4rem;">₹1,199</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -187,7 +227,6 @@
         <h3 style="margin: 20px 0 10px 0;">GRID MASTER NOTEBOOK</h3>
         <div style="color: var(--primary); font-size: 1.4rem;">₹749</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -195,7 +234,6 @@
         <h3 style="margin: 20px 0 10px 0;">METAL LOGO FOB</h3>
         <div style="color: var(--primary); font-size: 1.4rem;">₹499</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -203,7 +241,6 @@
         <h3 style="margin: 20px 0 10px 0;">TITAN SHAKER BOTTLE</h3>
         <div style="color: var(--primary); font-size: 1.4rem;">₹1,200</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -211,7 +248,6 @@
         <h3 style="margin: 20px 0 10px 0;">NEON MATTE CASE</h3>
         <div style="color: var(--primary); font-size: 1.4rem;">₹999</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -219,7 +255,6 @@
         <h3 style="margin: 20px 0 10px 0;">SYSTEM STICKER PACK</h3>
         <div style="color: var(--primary); font-size: 1.4rem;">₹299</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -227,7 +262,6 @@
         <h3 style="margin: 20px 0 10px 0;">GEAR TECH POUCH</h3>
         <div style="color: var(--primary); font-size: 1.4rem;">₹1,899</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -235,7 +269,6 @@
         <h3 style="margin: 20px 0 10px 0;">LOGO LANYARD</h3>
         <div style="color: var(--primary); font-size: 1.4rem;">₹249</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
 
     <div class="product-card">
@@ -243,9 +276,23 @@
         <h3 style="margin: 20px 0 10px 0;">DYNAMIC GIFT CARD</h3>
         <div style="color: var(--primary); font-size: 1.4rem;">₹2,000</div>
     <button class="buy-btn">ADD TO CART</button>
-</a>
     </div>
   </section>
+
+  <div class="trust-hub">
+      <div class="trust-badge">
+          <i class="fas fa-user-shield"></i>
+          <span>Secure Transmission</span>
+      </div>
+      <div class="trust-badge">
+          <i class="fas fa-shipping-fast"></i>
+          <span>INDIA Deployment</span>
+      </div>
+      <div class="trust-badge">
+          <i class="fas fa-certificate"></i>
+          <span>Elite Authenticity</span>
+      </div>
+  </div>
 
   <footer>
     <div class="footer-container">
@@ -276,6 +323,14 @@
 
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
+    /* --- HUD SCROLL LOGIC --- */
+    window.onscroll = function() {
+        let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        let scrolled = (winScroll / height) * 100;
+        document.getElementById("scroll-hud").style.width = scrolled + "%";
+    };
+
     particlesJS("particles-js", {
       "particles": {
         "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
@@ -312,10 +367,8 @@
 <script>
   /* --- REAL-TIME E-COMMERCE ENGINE --- */
 
-  // 1. Sync the Nav Bar count with the actual items in the cart
   function updateNavCount() {
     const cart = JSON.parse(localStorage.getItem('gearboxCart')) || [];
-    // This calculates the total quantity of all items combined
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     const countElement = document.getElementById('cart-count');
     if (countElement) {
@@ -323,11 +376,8 @@
     }
   }
 
-  // 2. Logic to add a specific product to the storage array
   function addToCart(productData) {
     let cart = JSON.parse(localStorage.getItem('gearboxCart')) || [];
-    
-    // Check if this specific item is already in the bag
     const existingItem = cart.find(item => item.name === productData.name);
     
     if (existingItem) {
@@ -341,26 +391,21 @@
       });
     }
     
-    // Save the updated list and refresh the Nav UI
     localStorage.setItem('gearboxCart', JSON.stringify(cart));
     updateNavCount();
   }
 
-  // 3. Setup event listeners for all product cards
   document.querySelectorAll('.product-card').forEach(card => {
     const btn = card.querySelector('.buy-btn');
     
     btn.addEventListener('click', () => {
-      // SCRAPE DATA: Get details directly from the HTML elements
       const name = card.querySelector('h3').innerText;
       const priceText = card.querySelector('div[style*="font-size: 1.4rem"]').innerText;
-      const price = parseInt(priceText.replace(/[^0-9]/g, '')); // Converts "₹5,999" to 5999
+      const price = parseInt(priceText.replace(/[^0-9]/g, '')); 
       const image = card.querySelector('img').src;
 
-      // Execute add to cart
       addToCart({ name, price, image });
       
-      // VISUAL FEEDBACK: Change button state
       const originalText = btn.innerText;
       btn.innerText = "ADDED TO CART";
       btn.style.borderColor = "#00ff00";
@@ -374,10 +419,8 @@
     });
   });
 
-  // 4. Initialize on page load
   updateNavCount();
 
-  // Listen for storage changes (helpful if you have multiple tabs open)
   window.addEventListener('storage', () => {
     updateNavCount();
   });

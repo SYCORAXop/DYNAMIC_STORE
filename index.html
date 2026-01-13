@@ -27,6 +27,14 @@
         z-index: -1; pointer-events: none; 
     }
 
+    /* --- TACTICAL HUD SCROLL BAR --- */
+    #scroll-hud {
+        position: fixed; top: 0; left: 0; height: 3px;
+        background: linear-gradient(to right, #ff0000, #990000);
+        width: 0%; z-index: 9999;
+        box-shadow: 0 0 10px var(--primary-glow);
+    }
+
     /* --- INTEGRATED TOP STRIP CSS --- */
     .top-strip { 
         background: var(--primary); 
@@ -138,10 +146,44 @@
     .buy-btn:hover { color: #000; border-color: var(--primary); }
     .buy-btn:hover::before { top: 0; }
 
+    /* --- TRUST HUB (SECURITY BADGES) --- */
+    .trust-hub {
+        background: #050505;
+        border-top: 1px solid #111;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 50px;
+        margin-top: 60px;
+    }
+
+    .trust-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        min-width: 150px;
+    }
+
+    .trust-badge i {
+        font-size: 2rem;
+        color: var(--primary);
+        filter: drop-shadow(0 0 5px var(--primary-glow));
+    }
+
+    .trust-badge span {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        color: #888;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
     /* --- FOOTER --- */
     footer {
-      background: #050505; border-top: 2px solid var(--primary);
-      padding: 80px 20px 40px 20px; text-align: left; margin-top: 100px;
+      background: #000; border-top: 2px solid var(--primary);
+      padding: 80px 20px 40px 20px; text-align: left;
     }
     .footer-container {
       max-width: 1200px; margin: auto; display: grid;
@@ -168,6 +210,8 @@
   </style>
 </head>
 <body>
+
+  <div id="scroll-hud"></div>
 
   <div id="particles-js"></div>
   
@@ -340,6 +384,21 @@
     </div>
   </section>
 
+  <div class="trust-hub">
+      <div class="trust-badge">
+          <i class="fas fa-user-shield"></i>
+          <span>Secure Transmission</span>
+      </div>
+      <div class="trust-badge">
+          <i class="fas fa-shipping-fast"></i>
+          <span>INDIA Deployment</span>
+      </div>
+      <div class="trust-badge">
+          <i class="fas fa-certificate"></i>
+          <span>Elite Authenticity</span>
+      </div>
+  </div>
+
   <footer>
     <div class="footer-container">
       <div class="footer-col">
@@ -377,6 +436,14 @@
 
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
+    /* --- HUD SCROLL LOGIC --- */
+    window.onscroll = function() {
+        let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        let scrolled = (winScroll / height) * 100;
+        document.getElementById("scroll-hud").style.width = scrolled + "%";
+    };
+
     particlesJS("particles-js", {
       "particles": {
         "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
